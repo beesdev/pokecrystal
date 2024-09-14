@@ -272,8 +272,8 @@ LanturnFrontpic:     INCBIN "gfx/pokemon/lanturn/front.animated.2bpp.lz"
 TyrogueFrontpic:     INCBIN "gfx/pokemon/tyrogue/front.animated.2bpp.lz"
 SkiploomFrontpic:    INCBIN "gfx/pokemon/skiploom/front.animated.2bpp.lz"
 MareepFrontpic:      INCBIN "gfx/pokemon/mareep/front.animated.2bpp.lz"
-ChuckPic:            INCBIN "gfx/trainers/chuck.2bpp.lz"
-EeveeFrontpic:       INCBIN "gfx/pokemon/eevee/front.animated.2bpp.lz"
+ChuckPic:            
+EeveeFrontpic:      
 ButterfreeBackpic:   INCBIN "gfx/pokemon/butterfree/back.2bpp.lz"
 ZubatFrontpic:       INCBIN "gfx/pokemon/zubat/front.animated.2bpp.lz"
 KimonoGirlPic:       INCBIN "gfx/trainers/kimono_girl.2bpp.lz"
@@ -422,8 +422,8 @@ ElectrodeFrontpic:   INCBIN "gfx/pokemon/electrode/front.animated.2bpp.lz"
 
 SECTION "Pics 14", ROMX
 
-SudowoodoBackpic:    INCBIN "gfx/pokemon/sudowoodo/back.2bpp.lz"
-FlaaffyBackpic:      INCBIN "gfx/pokemon/flaaffy/back.2bpp.lz"
+SudowoodoBackpic:    
+FlaaffyBackpic:     
 SentretFrontpic:     INCBIN "gfx/pokemon/sentret/front.animated.2bpp.lz"
 TogeticBackpic:      INCBIN "gfx/pokemon/togetic/back.2bpp.lz"
 BugsyPic:            INCBIN "gfx/trainers/bugsy.2bpp.lz"
