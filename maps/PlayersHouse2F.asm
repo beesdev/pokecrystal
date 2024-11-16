@@ -50,15 +50,7 @@ PlayersHousePosterScript:
 	describedecoration DECODESC_POSTER
 
 PlayersHouseRadioScript:
-	checkevent EVENT_TEMPORARY_UNTIL_MAP_RELOAD_1
-	iffalse .skipshiny
-	loadvar VAR_BATTLETYPE, BATTLETYPE_FORCESHINY
-.skipshiny
-	setevent EVENT_TEMPORARY_UNTIL_MAP_RELOAD_1
-	givepoke PSYDUCK, 5
-	loadwildmon PSYDUCK, 5
-	startbattle
-	reloadmapafterbattle
+	givepoke CHIKORITA, 2
 	end
 
 .NormalRadio:

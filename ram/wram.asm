@@ -2699,7 +2699,7 @@ wCurBaseDataEnd::
 
 wCurDamage:: dw
 
-	ds 2
+	ds 1 ;got rid of 1 ds
 
 wMornEncounterRate::  db
 wDayEncounterRate::   db
@@ -2707,8 +2707,11 @@ wNiteEncounterRate::  db
 wWaterEncounterRate:: db
 wListMoves_MoveIndicesBuffer:: ds NUM_MOVES
 wPutativeTMHMMove:: db
-wInitListType:: db
+wMoveSlotIndexBuffer::
+wInitListType:: db ;this shit is useless, unreferenced, and outside an union lessgooo
 wBattleHasJustStarted:: db
+wPutativeTMHMMoveListsIndex:: db
+
 
 wNamedObjectIndex::
 wTextDecimalByte::

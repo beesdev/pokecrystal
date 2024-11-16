@@ -11,7 +11,7 @@ MACRO move
 	assert \6 <= 40, "PP must be 40 or less"
 ENDM
 
-Moves:
+Moves::
 ; entries correspond to move ids (see constants/move_constants.asm)
 	table_width MOVE_LENGTH, Moves
 	move POUND,        EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
@@ -265,4 +265,7 @@ Moves:
 	move ROCK_SMASH,   EFFECT_DEFENSE_DOWN_HIT,   20, FIGHTING,     100, 15,  50
 	move WHIRLPOOL,    EFFECT_TRAP_TARGET,        15, WATER,         70, 15,   0
 	move BEAT_UP,      EFFECT_BEAT_UP,            10, DARK,         100, 10,   0
-	assert_table_length NUM_ATTACKS
+;	assert_table_length NUM_ATTACKS
+Moves2::
+	move MOVE_TEST,      EFFECT_BEAT_UP,            69, DARK,         100, 10,   0
+	move MOVE_TEST2,      EFFECT_BEAT_UP,           69, FIRE,         100, 2,   0

@@ -411,6 +411,7 @@ EvolvingText:
 	text_end
 
 LearnLevelMoves:
+;load the pointer's address into hl
 	ld a, [wTempSpecies]
 	ld [wCurPartySpecies], a
 	dec a
@@ -423,12 +424,16 @@ LearnLevelMoves:
 	ld h, [hl]
 	ld l, a
 
-.skip_evos
+.skip_evos  ; loops undil db 0 (no more evos)
 	ld a, [hli]
 	and a
 	jr nz, .skip_evos
+	
+	dec hl ; added here so find_move loop doesnt break
 
 .find_move
+; compares party level to the first db value
+	inc hl ;added to account for moveslist index
 	ld a, [hli]
 	and a
 	jr z, .done
@@ -440,6 +445,7 @@ LearnLevelMoves:
 	jr nz, .find_move
 
 	push hl
+	ld e, [hl] ;load moveslist index into e
 	ld d, a
 	ld hl, wPartyMon1Moves
 	ld a, [wCurPartyMon]
@@ -447,7 +453,7 @@ LearnLevelMoves:
 	call AddNTimes
 
 	ld b, NUM_MOVES
-.check_move
+.check_move ;TODO, rewrite this to account for move index
 	ld a, [hli]
 	cp d
 	jr z, .has_move
@@ -463,6 +469,8 @@ LearnLevelMoves:
 	ld a, d
 	ld [wPutativeTMHMMove], a
 	ld [wNamedObjectIndex], a
+	ld a, e
+	ld [wPutativeTMHMMoveListsIndex], a
 	call GetMoveName
 	call CopyName1
 	predef LearnMove
@@ -474,12 +482,17 @@ LearnLevelMoves:
 	ld [wTempSpecies], a
 	ret
 
-FillMoves:
+FillMoves: ;UNFINISHED
 ; Fill in moves at de for wCurPartySpecies at wCurPartyLevel
 
 	push hl
 	push de
 	push bc
+
+	ld hl, wMoveSlotIndexBuffer
+	xor a 
+	ld [hl], a
+
 	ld hl, EvosAttacksPointers
 	ld b, 0
 	ld a, [wCurPartySpecies]
@@ -494,7 +507,7 @@ FillMoves:
 .GoToAttacks:
 	ld a, [hli]
 	and a
-	jr nz, .GoToAttacks
+	jr nz, .GoToAttacks ; jumps until db 0
 	jr .GetLevel
 
 .NextMove:
@@ -504,7 +517,8 @@ FillMoves:
 .GetLevel:
 	ld a, [hli]
 	and a
-	jp z, .done
+	jp z, .done ; no more level-up moves
+
 	ld b, a
 	ld a, [wCurPartyLevel]
 	cp b
@@ -516,7 +530,7 @@ FillMoves:
 	cp b
 	jr nc, .GetMove
 
-.CheckMove:
+.CheckMove: ;TODO, rewrite this to account for move index
 	push de
 	ld c, NUM_MOVES
 .CheckRepeat:
@@ -534,6 +548,11 @@ FillMoves:
 	and a
 	jr z, .LearnMove
 	inc de
+	
+	ld a, [wMoveSlotIndexBuffer]
+	inc a
+	ld [wMoveSlotIndexBuffer], a
+
 	dec c
 	jr nz, .CheckSlot
 	pop de
@@ -559,24 +578,71 @@ FillMoves:
 .LearnMove:
 	ld a, [hl]
 	ld [de], a
+
+; get to the correct address
+	push de
+	push hl
+	ld hl, MON_MOVELISTS - MON_MOVES
+	add hl, de
+	ld d, h
+	ld e, l
+;got the address in de
+
+	pop hl
+	inc hl ;movelist index
+	ld a, [hld] ;back to move
+	ld b, a
+
+	push de
+	pop hl ;get the address in hl for bit operations
+
+	ld a, [wMoveSlotIndexBuffer] ; this sucks sob
+	cp 3
+	jr z, .3
+	cp 2
+	jr z, .2
+	cp 1
+	jr z, .1
+;cp 0
+	ld a, [hl]
+	and %11111100
+	jr .gotbits
+.1
+	ld a, [hl]
+	and %11110011
+	jr .gotbits
+.2
+	ld a, [hl]
+	and %11001111
+	jr .gotbits
+.3
+	ld a, [hl]
+	and %00111111
+
+.gotbits
+	or b
+	ld [hl], a
+
+	pop de
+
 	ld a, [wEvolutionOldSpecies]
 	and a
-	jr z, .NextMove
+	jp z, .NextMove
 	push hl
 	ld a, [hl]
 	ld hl, MON_PP - MON_MOVES
 	add hl, de
 	push hl
 	dec a
-	ld hl, Moves + MOVE_PP
+	ld hl, Moves + MOVE_PP 
 	ld bc, MOVE_LENGTH
 	call AddNTimes
 	ld a, BANK(Moves)
 	call GetFarByte
 	pop hl
-	ld [hl], a
+	ld [hl], a ; load the move pp into the slot's pp
 	pop hl
-	jr .NextMove
+	jp .NextMove
 
 .done
 	pop bc

@@ -1194,7 +1194,15 @@ PlaceMoveData:
 	predef PrintMoveType
 	ld a, [wCurSpecies]
 	dec a
-	ld hl, Moves + MOVE_POWER
+
+	push af
+	ld a, [wMenuCursorY]
+	ld [wCurMoveNum], a 
+	call ReturnMovelistAddrCurPartyMon
+	ld bc, MOVE_POWER
+	add hl, bc
+	pop af
+
 	ld bc, MOVE_LENGTH
 	call AddNTimes
 	ld a, BANK(Moves)

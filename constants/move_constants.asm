@@ -297,3 +297,8 @@ DEF NUM_BATTLE_ANIMS EQU const_value - 1
 	const BATTLEANIM_WOBBLE
 	const BATTLEANIM_SHAKE
 	const BATTLEANIM_HIT_CONFUSION
+
+;moves2
+	const_def
+	const MOVE_TEST
+	const MOVE_TEST2
